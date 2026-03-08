@@ -10,7 +10,7 @@ public class CurrencyConverter {
 
         switch (from) {
             case "USD": usdAmount = amount; break;
-            case "AUD": usdAmount = amount/1.55; break;
+            case "AUD": usdAmount = amount / 1.55; break;
             case "EUR": usdAmount = amount / 0.92; break;
             case "JPY": usdAmount = amount / 148.50; break;
             case "GBP": usdAmount = amount / 0.78; break;
