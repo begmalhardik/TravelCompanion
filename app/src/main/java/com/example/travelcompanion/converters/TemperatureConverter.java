@@ -16,6 +16,8 @@ public class TemperatureConverter {
         if(from.equals("Kelvin") && to.equals("Celsius"))
             return value - 273.15;
 
+        value = 0;
+
         return value;
     }
 }
