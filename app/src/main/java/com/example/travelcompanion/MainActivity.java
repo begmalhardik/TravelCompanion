@@ -18,14 +18,30 @@ import com.example.travelcompanion.converters.CurrencyConverter;
 import com.example.travelcompanion.converters.FuelConverter;
 import com.example.travelcompanion.converters.TemperatureConverter;
 import com.example.travelcompanion.databinding.ActivityMainBinding;
+import com.example.travelcompanion.model.UnitType;
 import com.example.travelcompanion.utils.ValidationUtils;
+
+/*
+    Things to do -
+    1. README.md file (at last, i will add)
+    2. three different enums files
+    3. clean the architecture
+*/
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
-    private final String[] currencyUnits = {"USD", "AUD", "EUR", "JPY", "GBP"};
-    private final String[] temperatureUnits = {"Celsius", "Fahrenheit", "Kelvin"};
-    private final String[] fuelUnits = {"MPG", "KM/L", "Gallon", "Litre", "Nautical Mile", "Kilometer"};
+    private final String[] currencyUnits = { "USD", "AUD", "EUR", "JPY", "GBP"};
+
+    private final String[] temperatureUnits = { "CELSIUS", "FAHRENHEIT", "KELVIN"};
+
+    private final String[] fuelUnits = { "MPG",
+            "KM_PER_LITER",
+            "GALLON",
+            "LITER",
+            "NAUTICAL_MILE",
+            "KILOMETER"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,12 +132,15 @@ public class MainActivity extends AppCompatActivity {
         String from = binding.fromUnitSpinner.getSelectedItem().toString();
         String to =  binding.toUnitSpinner.getSelectedItem().toString();
 
+        UnitType fromUnit = UnitType.valueOf(from.toUpperCase());
+        UnitType toUnit = UnitType.valueOf(to.toUpperCase());
+
         if (ValidationUtils.isNegative(value) && !category.equals("Temperature")) {
             Toast.makeText(this, "Negative values not allowed for this conversion", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(from.equals(to)) {
+        if(fromUnit.equals(toUnit)) {
             binding.tvResult.setText(String.valueOf(value));
             Toast.makeText(this, "Same units selected", Toast.LENGTH_SHORT).show();
             return;
@@ -130,15 +149,15 @@ public class MainActivity extends AppCompatActivity {
         double result = 0;
 
         if(category.equals("Currency")) {
-            result = CurrencyConverter.convert(from, to, value);
+            result = CurrencyConverter.convert(fromUnit, toUnit, value);
         }
 
         if(category.equals("Temperature")) {
-            result = TemperatureConverter.convert(from, to, value);
+            result = TemperatureConverter.convert(fromUnit, toUnit, value);
         }
 
         if(category.equals("Fuel")) {
-            result = FuelConverter.convert(from, to, value);
+            result = FuelConverter.convert(fromUnit, toUnit, value);
         }
 
         binding.tvResult.setText(String.format("%.2f", result));
